@@ -1,9 +1,9 @@
-import Layout from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NoPage } from "./pages/NoPage";
 import { NewPost } from "./pages/NewPost";
 import { Profile } from "./pages/Profile";
+import { Layout } from "./pages/Layout";
 
 function App() {
 
