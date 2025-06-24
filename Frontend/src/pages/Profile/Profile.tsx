@@ -1,3 +1,10 @@
+import { Navbar } from "../../components/Navbar"
+
 export const Profile = () => {
-  return <h1>Profile</h1>;
+  return (
+    <>
+    <Navbar canExit={false} text="profile name"/>
+    <h1>Profile</h1>
+    </>
+  )
 };

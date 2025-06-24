@@ -1,8 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import {
-  AppBar,
-  BottomNavigationAction,
   Paper,
   Typography,
 } from "@mui/material";
@@ -27,18 +24,21 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
         background: "white",
         height: 50,
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
       }}
       elevation={3}
       square
     >
       {canExit && (
-        <button onClick={() => navigate(-1)} style={{background: 'white', border: 0}}>
+        <button
+          onClick={() => navigate(-1)}
+          style={{ background: "white", border: 0 }}
+        >
           <CloseIcon />
         </button>
       )}
       <Typography
-        variant="h3"
+        variant="h4"
         sx={{
           color: "black",
           fontFamily: "Lavishly Yours",
