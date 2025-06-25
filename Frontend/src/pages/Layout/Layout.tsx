@@ -1,4 +1,3 @@
-import { Outlet } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
