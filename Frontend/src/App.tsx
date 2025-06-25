@@ -10,15 +10,15 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="new-post" element={<NewPost />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="new-post" element={<NewPost />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        </Layout>
+      </BrowserRouter>
     </>
   )
 }
