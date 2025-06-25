@@ -1,6 +1,6 @@
 import { UUID } from "crypto"
 import { Entity, Column, PrimaryColumn, ManyToOne } from "typeorm"
-import { User } from "./user"
+import { User } from "../User/user.entity"
 
 @Entity()
 export class Post {

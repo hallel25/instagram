@@ -1,9 +1,10 @@
 import { UUID } from "crypto"
 import { Entity, Column, PrimaryColumn, ManyToOne } from "typeorm"
-import { Post } from "./post"
+import { Post } from "../Post/post.entity"
+import { User } from "../User/user.entity"
 
 @Entity()
-export class User {
+export class Like {
     @PrimaryColumn()
     id: UUID
 
@@ -16,5 +17,5 @@ export class User {
     postId: UUID
 
     @Column()
-    createAt: Date
+    createdAt: Date
 }
