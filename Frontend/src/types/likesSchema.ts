@@ -1,10 +1,10 @@
-import { z } from "zod";
+import * as z from "zod/v4";
 
 export const likeSchema = z.object({
-  id: z.string().uuid(),
-  userId: z.string().uuid(),
-  postId: z.string().uuid(),
-  createdAt: z.string().datetime(),
+  id: z.uuid(),
+  userId: z.uuid(),
+  postId: z.uuid(),
+  createdAt: z.date(),
 });
 
 export type Like = z.infer<typeof likeSchema>;

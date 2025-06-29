@@ -1,9 +1,9 @@
-import { z } from "zod";
+import * as z from "zod/v4";
 
 export const userSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   username: z.string(),
-  email: z.string().email(),
+  email: z.email(),
 });
 
 export type User = z.infer<typeof userSchema>;
