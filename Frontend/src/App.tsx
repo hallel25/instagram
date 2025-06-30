@@ -4,11 +4,16 @@ import { NoPage } from "./pages/NoPage";
 import { NewPost } from "./pages/NewPost";
 import { Profile } from "./pages/Profile";
 import { Layout } from "./pages/Layout";
+import { useState } from "react";
+import { CurrentUserContext } from "./hooks/useUser";
+import type { User } from "./types";
+import { mockUsers } from "./DB/DB";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState<User>(mockUsers[0]);
 
   return (
-    <>
+    <CurrentUserContext value={{currentUser, setCurrentUser}}>
       <BrowserRouter>
         <Layout>
           <Routes>
@@ -19,8 +24,8 @@ function App() {
           </Routes>
         </Layout>
       </BrowserRouter>
-    </>
-  )
+    </CurrentUserContext>
+  );
 }
 
-export default App
+export default App;
