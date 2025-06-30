@@ -8,10 +8,10 @@ export const postSchema = z.object({
     hostname: z.regexes.domain,
   }),
   userId: z.uuid(),
-  createdAt: z.date,
+  createdAt: z.date(),
   updatedAt: z.date(),
 });
 
-export type Post = z.infer<typeof postSchema>;
+export type PostType = z.infer<typeof postSchema>;
 export const postInputSchema = postSchema.omit({ id: true });
 export type PostInput = z.infer<typeof postInputSchema>;

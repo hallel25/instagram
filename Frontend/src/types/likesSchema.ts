@@ -7,4 +7,4 @@ export const likeSchema = z.object({
   createdAt: z.date(),
 });
 
-export type Like = z.infer<typeof likeSchema>;
+export type LikeType = z.infer<typeof likeSchema>;

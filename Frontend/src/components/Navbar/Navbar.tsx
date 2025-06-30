@@ -22,7 +22,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext);
-  
+
   const handleUserChange = (e: SelectChangeEvent) => {
     setCurrentUser(e.target.value);
   };
@@ -70,14 +70,18 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
         </Typography>
         <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 120 }} size="small">
           <InputLabel>{currentUser.username}</InputLabel>
-          <Select label={currentUser.username} value={currentUser} onChange={handleUserChange}>
+          <Select
+            label={currentUser.username}
+            value={currentUser}
+            onChange={handleUserChange}
+          >
             {mockUsers.map((user) => {
-              return <MenuItem value={user.id}>{user.username}</MenuItem>;
+              return <MenuItem value={user.id}>{user.username}</MenuItem>
             })}
           </Select>
         </FormControl>
       </Paper>
-      <Box sx={{ height: 40 }} />
+      <Box sx={{ height: 50 }} />
     </>
   );
 };

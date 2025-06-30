@@ -6,11 +6,11 @@ import { Profile } from "./pages/Profile";
 import { Layout } from "./pages/Layout";
 import { useState } from "react";
 import { CurrentUserContext } from "./hooks/useUser";
-import type { User } from "./types";
+import type { UserType } from "./types";
 import { mockUsers } from "./DB/DB";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState<User>(mockUsers[0]);
+  const [currentUser, setCurrentUser] = useState<UserType>(mockUsers[0]);
 
   return (
     <CurrentUserContext value={{currentUser, setCurrentUser}}>

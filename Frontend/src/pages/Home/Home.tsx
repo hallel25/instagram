@@ -1,35 +1,15 @@
-import { Navbar } from "../../components/Navbar"
+import { mockPosts } from "../../DB/DB";
+import { Navbar } from "../../components/Navbar";
+import { Post } from "../../components/Post/Post";
+import type { PostType } from "../../types";
 
 export const Home = () => {
   return (
     <>
-  <Navbar text='instagram' canExit={false}></Navbar>
-  <h1>Homeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeee
-    eee
-    eeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeee
-    ee
-    eeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeee
-    eeeee
-    eeeeeeeeeeee
-    eeeeeeeeeeeeeee
-    eeeeeeeeeeeee
-    eeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeee
-    eeeeeeeeeeeee
-    eee
-    eeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeee
-    eeeeeeeeeeeee
-    eeeeeeeeeeeee</h1>
+      <Navbar text="instagram" canExit={false} />
+      {mockPosts.map(post => {
+        return <Post post={post} />
+      })}
     </>
   );
 };
