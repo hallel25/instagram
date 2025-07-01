@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../../hooks/useUser";
 import { mockUsers } from "../../DB/DB";
+import "./navbar.css";
 
 interface NavbarProps {
   text: string;
@@ -31,16 +32,10 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
   return (
     <>
       <Paper
+      id="navbar"
         sx={{
           position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          background: "white",
-          height: 50,
           display: "flex",
-          alignItems: "center",
-          zIndex: 100
         }}
         elevation={3}
         square
@@ -60,12 +55,10 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
           </button>
         )}
         <Typography
+        id="page-name"
           variant="h4"
           sx={{
-            color: "black",
-            fontFamily: "Send Flowers",
             textAlign: "center",
-            flexGrow: 1,
           }}
         >
           {text}

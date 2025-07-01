@@ -1,0 +1,7 @@
+#caption {
+  color: rgb(82, 82, 82);
+  text-align: right;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
