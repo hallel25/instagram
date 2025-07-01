@@ -1,12 +1,14 @@
 import { useContext } from "react";
-import { Navbar } from "../../components/Navbar"
+import { Navbar } from "../../components/Navbar";
 import { CurrentUserContext } from "../../hooks/useUser";
 import { mockPosts } from "../../DB/DB";
 import { Post } from "../../components/Post/Post";
 
 export const Profile = () => {
   const { currentUser } = useContext(CurrentUserContext);
-  const currentUserPosts = mockPosts.filter((post) => post.userId == currentUser.id)
+  const currentUserPosts = mockPosts
+    .filter((post) => post.userId == currentUser.id)
+    .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
 
   return (
     <>
