@@ -1,11 +1,14 @@
 import { Button, TextField } from "@mui/material";
 import { Navbar } from "../../components/Navbar";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod/v4";
+import { mockPosts } from "../../DB/DB";
+import { CurrentUserContext } from "../../hooks/useUser";
 
 export const NewPost = () => {
   const navigate = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
   const [URL, setURL] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [URLError, setURLError] = useState<boolean>(false);
@@ -25,18 +28,23 @@ export const NewPost = () => {
   };
 
   const submit = () => {
-    const httpUrl = z.url({
-      protocol: /^https?$/,
-      hostname: z.regexes.domain,
-    });
+    const httpUrl = z.string().regex(/^(src\/\assets\/\photos\/)\w+/);
 
     const result = httpUrl.safeParse(URL);
 
-    if (!result.success) {
-      setURLError(true);
+    if (result.success) {
+      mockPosts.push({
+        id: String(mockPosts.length + 1),
+        caption: description,
+        imageUrl: URL,
+        userId: currentUser.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      navigate("/");
     } else {
-      
-      navigate(-1);
+      setURLError(true);
+      alert("invalid url");
     }
   };
 
