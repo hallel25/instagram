@@ -24,7 +24,8 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
   const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext);
 
   const handleUserChange = (e: SelectChangeEvent) => {
-    setCurrentUser(e.target.value);
+    setCurrentUser(mockUsers.find((user) => user.id == e.target.value));
+    console.log(currentUser)
   };
 
   return (
@@ -39,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
           height: 50,
           display: "flex",
           alignItems: "center",
+          zIndex: 100
         }}
         elevation={3}
         square
@@ -71,8 +73,6 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
         <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 120 }} size="small">
           <InputLabel>{currentUser.username}</InputLabel>
           <Select
-            label={currentUser.username}
-            value={currentUser}
             onChange={handleUserChange}
           >
             {mockUsers.map((user) => {
