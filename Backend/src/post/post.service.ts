@@ -27,7 +27,7 @@ export class PostService implements IPostService {
   }
 
   getUsersPosts(userId: UUID): Post[] {
-    return mockPosts.filter((post) => (post.userId == userId));
+    return mockPosts.filter((post) => post.userId == userId);
   }
 
   addPost(post: createPostDto) {
@@ -46,6 +46,13 @@ export class PostService implements IPostService {
   }
 
   async deletePost(postId: UUID) {
-    throw new Error('Method not implemented.');
+    const deletedPost = mockPosts.find((post) => post.id == postId);
+
+    if (deletedPost) {
+      const removedPostIndex = mockPosts.indexOf(deletedPost);
+      removedPostIndex != -1 && mockPosts.splice(removedPostIndex, 1);
+    } else {
+      throw new Error('post doesnt exist');
+    }
   }
 }
