@@ -4,6 +4,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import type { JSX } from "react";
+import { Link } from "react-router-dom";
 
 export const Layout = (props: JSX.ElementChildrenAttribute) => {
   return (
@@ -16,12 +17,17 @@ export const Layout = (props: JSX.ElementChildrenAttribute) => {
         elevation={3}
       >
         <BottomNavigation>
-          <BottomNavigationAction href="/" icon={<HomeIcon />} />
+          <BottomNavigationAction component={Link} to="/" icon={<HomeIcon />} />
           <BottomNavigationAction
-            href="new-post"
+            component={Link}
+            to="/new-post"
             icon={<AddPhotoAlternateIcon />}
           />
-          <BottomNavigationAction href="profile" icon={<AccountCircleIcon />} />
+          <BottomNavigationAction
+            component={Link}
+            to="/profile"
+            icon={<AccountCircleIcon />}
+          />
         </BottomNavigation>
       </Paper>
     </>
