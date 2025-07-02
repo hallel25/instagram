@@ -1,12 +1,16 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { Navbar } from "../../components/Navbar";
-import { useContext, useState } from "react";
+import { useContext, useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod/v4";
 import { mockPosts } from "../../DB/DB";
 import { CurrentUserContext } from "../../hooks/useUser";
 
-export const NewPost = () => {
+interface newPostProps {
+  postId: string;
+}
+
+export const NewPost: FC<newPostProps> = ({ postId }) => {
   const navigate = useNavigate();
   const { currentUser } = useContext(CurrentUserContext);
   const [URL, setURL] = useState<string>("");
@@ -34,7 +38,7 @@ export const NewPost = () => {
 
     if (result.success) {
       mockPosts.push({
-        id: String(mockPosts.length + 1),
+        id: postId,
         caption: description,
         imageUrl: URL,
         userId: currentUser.id,
@@ -51,7 +55,7 @@ export const NewPost = () => {
   return (
     <>
       <Navbar canExit={true} text="Create New Post" />
-      <h1>New Post</h1>
+      <Box sx={{ height: 10 }} />
       <TextField
         fullWidth
         required

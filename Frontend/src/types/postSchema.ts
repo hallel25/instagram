@@ -1,15 +1,12 @@
-import * as z from "zod/v4";
+import { z } from "zod/v4";
 
 export const postSchema = z.object({
   id: z.uuid(),
   caption: z.string(),
-  imageUrl: z.url({
-    protocol: /^https?$/,
-    hostname: z.regexes.domain,
-  }),
+  imageUrl: z.string().regex(/^(src\/\assets\/\photos\/)\w+/),
   userId: z.uuid(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 });
 
 export type PostType = z.infer<typeof postSchema>;
