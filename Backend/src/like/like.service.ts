@@ -1,27 +1,27 @@
-import { UUID } from "crypto";
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from "./entities/like.entity";
 import { likePostDto } from "./dto/likePost.dto";
+import { unLikePostDto } from "./dto/unLike.dto";
 
 export abstract class ILikeService {
-    abstract likePost(like: likePostDto);
-    abstract removeLike();
+//   abstract likePost(like: likePostDto);
+//   abstract removeLike(like: likePostDto);
 }
 
 @Injectable()
 export class LikeService implements ILikeService {
-    constructor(
-        @InjectRepository(Like)
-        private LikeRepository: Repository<Like>
-    ) {}
+    // constructor(
+    //     @InjectRepository(Like)
+    //     private LikeRepository: Repository<Like>
+    // ) {}
 
-    likePost(like: likePostDto) {
-        throw new Error("Method not implemented.");
-    }
+    // async likePost(like: likePostDto) {
+    //     return await this.LikeRepository.save(like);
+    // }
 
-    removeLike() {
-        throw new Error("Method not implemented.");
-    }
+    // async removeLike(like: unLikePostDto) {
+    //     return await this.LikeRepository.delete(like);
+    // }
 }
