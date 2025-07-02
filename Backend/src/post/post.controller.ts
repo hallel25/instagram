@@ -4,7 +4,7 @@ import { createPostDto } from "./dto/createPost.dto";
 import { editPostDto } from "./dto/editPost.dto";
 import { PostService } from "./post.service";
 
-@Controller('post')
+@Controller('posts')
 export class PostController {
     constructor(private postService: PostService) {}
 
