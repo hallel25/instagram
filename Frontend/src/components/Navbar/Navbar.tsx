@@ -36,7 +36,8 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
   }
 
   const handleUserChange = (e: SelectChangeEvent) => {
-    setCurrentUser(users.find((user) => user.id == e.target.value));
+    const user = users.find((user) => user.id == e.target.value); 
+    user && setCurrentUser(user);
   };
 
   return (

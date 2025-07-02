@@ -12,10 +12,11 @@ export const NewPost = () => {
   const [URL, setURL] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [URLError, setURLError] = useState<boolean>(false);
+  const { mutate } = useCreatePost();
 
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setURL(e.target.value);
-
+    
     if (e.target.validity.valid) {
       setURLError(false);
     } else {
@@ -26,16 +27,15 @@ export const NewPost = () => {
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
-
-  const submit = () => {
+  
+  const onSubmit = () => {
     const httpUrl = z.string().regex(/^(src\/\assets\/\photos\/)\w+/);
-
     const result = httpUrl.safeParse(URL);
-
+    
     if (result.success) {
       navigate(-1);
 
-      useCreatePost({
+      mutate({
         caption: description,
         imageUrl: URL,
         userId: currentUser.id,
@@ -75,7 +75,7 @@ export const NewPost = () => {
         fullWidth
         disabled={URL == ""}
         style={{ marginTop: 20 }}
-        onClick={submit}
+        onClick={onSubmit}
       >
         CREATE
       </Button>

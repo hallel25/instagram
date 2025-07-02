@@ -18,14 +18,8 @@ function App() {
         <Layout>
           <Routes>
             <Route index element={<Home />} />
-            <Route
-              path="new-post"
-              element={<NewPost />}
-            />
-            <Route
-              path="profile"
-              element={<Profile />}
-            />
+            <Route path="new-post" element={<NewPost />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
         </Layout>
