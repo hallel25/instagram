@@ -11,7 +11,7 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @Get(':userId')
+  @Get('/:userId')
   async getUserById(@Param('userId') userId: UUID) {
     return this.userService.getUsersById(userId);
   }
