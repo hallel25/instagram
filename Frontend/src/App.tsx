@@ -7,7 +7,7 @@ import { Layout } from "./pages/Layout";
 import { useState } from "react";
 import { CurrentUserContext } from "./hooks/useUser";
 import type { UserType } from "./types";
-import { mockPosts, mockUsers } from "./DB/DB";
+import { mockUsers } from "./DB/DB";
 
 function App() {
   const [currentUser, setCurrentUser] = useState<UserType>(mockUsers[0]);
@@ -20,7 +20,7 @@ function App() {
             <Route index element={<Home />} />
             <Route
               path="new-post"
-              element={<NewPost postId={String(mockPosts.length + 1)} />}
+              element={<NewPost />}
             />
             <Route
               path="profile"

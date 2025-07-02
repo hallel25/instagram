@@ -1,16 +1,12 @@
 import { Box, Button, TextField } from "@mui/material";
 import { Navbar } from "../../components/Navbar";
-import { useContext, useState, type FC } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod/v4";
-import { mockPosts } from "../../DB/DB";
 import { CurrentUserContext } from "../../hooks/useUser";
+import { useCreatePost } from "../../api/postsApi/useCreatePost";
 
-interface newPostProps {
-  postId: string;
-}
-
-export const NewPost: FC<newPostProps> = ({ postId }) => {
+export const NewPost = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(CurrentUserContext);
   const [URL, setURL] = useState<string>("");
@@ -37,15 +33,13 @@ export const NewPost: FC<newPostProps> = ({ postId }) => {
     const result = httpUrl.safeParse(URL);
 
     if (result.success) {
-      mockPosts.push({
-        id: postId,
+      navigate(-1);
+
+      useCreatePost({
         caption: description,
         imageUrl: URL,
         userId: currentUser.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       });
-      navigate("/");
     } else {
       setURLError(true);
       alert("invalid url");
@@ -55,7 +49,7 @@ export const NewPost: FC<newPostProps> = ({ postId }) => {
   return (
     <>
       <Navbar canExit={true} text="Create New Post" />
-      <Box sx={{ height: 10 }} />
+      <Box sx={{ height: 25 }} />
       <TextField
         fullWidth
         required
@@ -66,6 +60,7 @@ export const NewPost: FC<newPostProps> = ({ postId }) => {
         error={URLError}
         helperText="Create a new post with the specified URL"
       />
+      <Box sx={{ height: 12 }} />
       <TextField
         id="standard-basic"
         label="Description"

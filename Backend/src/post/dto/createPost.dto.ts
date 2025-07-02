@@ -5,7 +5,7 @@ export class createPostDto {
     @IsString()
     caption: string;
 
-    @IsUrl()
+    @IsString()
     @IsNotEmpty({ message: "image url can't be empty"})
     imageUrl: string;
 
