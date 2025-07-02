@@ -15,10 +15,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState, type FC, useContext } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CurrentUserContext } from "../../hooks/useUser";
-import { mockPosts, mockUsers } from "../../DB/DB";
+import { mockUsers } from "../../DB/DB";
 import { NewPost } from "../../pages/NewPost";
 import "./post.css";
 import { Profile } from "../../pages/Profile";
+import { useDeletePost } from "../../api/postsApi/useDeletePost";
 
 interface PostProps {
   post: PostType;
@@ -29,6 +30,7 @@ export const Post: FC<PostProps> = ({ post }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+    const { mutate } = useDeletePost();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,12 +41,11 @@ export const Post: FC<PostProps> = ({ post }) => {
   };
 
   const handleEdit = () => {
-    return <NewPost postId={post.id} />;
+    return <NewPost />;
   };
 
   const handleDelete = () => {
-    const removedPostIndex = mockPosts.indexOf(post);
-    removedPostIndex != -1 && mockPosts.splice(removedPostIndex, 1);
+    mutate(post.id);
 
     setAnchorEl(null);
   };
@@ -54,8 +55,7 @@ export const Post: FC<PostProps> = ({ post }) => {
   };
 
   const handleOpenProfile = () => {
-    console.log("fg");
-    return <Profile userId={post.userId} />;
+    return <Profile />;
   };
 
   return (
