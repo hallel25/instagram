@@ -12,7 +12,7 @@ export class UserController {
   }
 
   @Get('/:userId')
-  async getUserById(@Param('userId') userId: UUID) {
+  getUserById(@Param('userId') userId: UUID) {
     return this.userService.getUsersById(userId);
   }
 }

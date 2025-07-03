@@ -1,27 +1,52 @@
-import { Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like } from "./entities/like.entity";
-import { likePostDto } from "./dto/likePost.dto";
-import { unLikePostDto } from "./dto/unLike.dto";
+import { Like } from './entities/like.entity';
+import { likePostDto } from './dto/likePost.dto';
+import { unLikePostDto } from './dto/unLike.dto';
+import { UUID } from 'crypto';
+import { mockLikes } from 'src/DB/DB';
 
 export abstract class ILikeService {
-//   abstract likePost(like: likePostDto);
-//   abstract removeLike(like: likePostDto);
+  abstract likePost(like: likePostDto);
+  abstract removeLike(like: likePostDto);
+  abstract getPostsLikes(postId: UUID);
 }
 
 @Injectable()
 export class LikeService implements ILikeService {
-    // constructor(
-    //     @InjectRepository(Like)
-    //     private LikeRepository: Repository<Like>
-    // ) {}
+  // constructor(
+  //     @InjectRepository(Like)
+  //     private LikeRepository: Repository<Like>
+  // ) {}
 
-    // async likePost(like: likePostDto) {
-    //     return await this.LikeRepository.save(like);
-    // }
+  getPostsLikes(postId: UUID) {
+    return mockLikes.find(
+      (likeObj) =>
+        likeObj.postId == postId,
+    );
+  }
 
-    // async removeLike(like: unLikePostDto) {
-    //     return await this.LikeRepository.delete(like);
-    // }
+  likePost(like: likePostDto) {
+    mockLikes.push({
+      id: crypto.randomUUID(),
+      postId: like.postId,
+      userId: like.userId,
+      createdAt: like.createdAt,
+    });;
+  }
+
+  removeLike(like: unLikePostDto) {
+    const deletedLike = mockLikes.find(
+      (likeObj) =>
+        likeObj.userId == like.userId && likeObj.postId == like.postId,
+    );
+
+    if (deletedLike) {
+      const removedLikeIndex = mockLikes.indexOf(deletedLike);
+      removedLikeIndex != -1 && mockLikes.splice(removedLikeIndex, 1);
+    } else {
+      throw new Error('post doesnt exist');
+    }
+  }
 }

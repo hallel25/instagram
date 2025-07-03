@@ -9,31 +9,31 @@ export class PostController {
     constructor(private postService: PostService) {}
 
     @Get()
-    async getAll() {
+    getAll() {
         return this.postService.getAllPosts();
     }
 
     @Get(':userId')
-    async getPostsById(@Param('userId') userId: UUID) {
+    getPostsById(@Param('userId') userId: UUID) {
         return this.postService.getUsersPosts(userId);
     }
 
     @Post('/create-post')
-    async createPost(
+    createPost(
         @Body() post: createPostDto,
     ) {
         this.postService.addPost(post);
     }
 
     @Patch('/edit-post')
-    async editPost(
+    editPost(
         @Body() post: editPostDto,
     ) {
         this.postService.editPost(post);
     }
 
     @Delete('delete/:postId')
-    async deletePost(@Param('postId') postId: UUID) {
+    deletePost(@Param('postId') postId: UUID) {
         return this.postService.deletePost(postId);
     }
 }
