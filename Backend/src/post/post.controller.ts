@@ -4,7 +4,7 @@ import { createPostDto } from "./dto/createPost.dto";
 import { editPostDto } from "./dto/editPost.dto";
 import { PostService } from "./post.service";
 
-@Controller('posts')
+@Controller('posts/')
 export class PostController {
     constructor(private postService: PostService) {}
 
@@ -18,14 +18,14 @@ export class PostController {
         return this.postService.getUsersPosts(userId);
     }
 
-    @Post('/create-post')
+    @Post('create-post')
     createPost(
         @Body() post: createPostDto,
     ) {
         this.postService.addPost(post);
     }
 
-    @Patch('/edit-post')
+    @Patch('edit-post')
     editPost(
         @Body() post: editPostDto,
     ) {

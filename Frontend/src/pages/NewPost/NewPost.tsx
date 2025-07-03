@@ -29,9 +29,12 @@ export const NewPost = () => {
   };
   
   const onSubmit = () => {
-    const httpUrl = z.string().regex(/^(src\/\assets\/\photos\/)\w+/);
+    const httpUrl = z.url({
+      protocol: /^https?$/,
+      hostname: z.regexes.domain,
+    });
     const result = httpUrl.safeParse(URL);
-    
+
     if (result.success) {
       navigate(-1);
 

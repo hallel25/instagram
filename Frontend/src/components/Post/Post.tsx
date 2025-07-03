@@ -1,9 +1,11 @@
 import {
+  Alert,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   CardMedia,
+  CircularProgress,
   IconButton,
   Menu,
   MenuItem,
@@ -12,14 +14,18 @@ import {
 import type { PostType } from "../../types";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState, type FC, useContext } from "react";
+import { useState, type FC, useContext, useEffect } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CurrentUserContext } from "../../hooks/useUser";
-import { mockUsers } from "../../DB/DB";
 import { NewPost } from "../../pages/NewPost";
 import "./post.css";
-import { Profile } from "../../pages/Profile";
 import { useDeletePost } from "../../api/postsApi/useDeletePost";
+import { useGetUserById } from "../../api/usersApi/useGetUserById";
+import { Link } from "react-router-dom";
+import { useLikePost } from "../../api/likesApi/useLikePost";
+import { usePostsLikes } from "../../api/likesApi/useGetPostsLikes";
+import { useUnlikePost } from "../../api/likesApi/useUnlikePost";
+import { tr } from "zod/v4/locales";
 
 interface PostProps {
   post: PostType;
@@ -27,12 +33,49 @@ interface PostProps {
 
 export const Post: FC<PostProps> = ({ post }) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const [liked, setLiked] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [liked, setLiked] = useState<boolean>(false);
   const open = Boolean(anchorEl);
-    const { mutate } = useDeletePost();
+  const { mutate: mutateDeletePost } = useDeletePost();
+  const { mutate: mutateLikePost } = useLikePost();
+  const { mutate: mutateUnlikePost } = useUnlikePost();
+  const { data: user } = useGetUserById(post.userId);
+
+  const {
+    data: likes = [],
+    error: likesError,
+    isError: likesIsError,
+    isLoading: likesIsLoading,
+  } = usePostsLikes(post.id);
+
+  if (likesIsLoading) return <CircularProgress />;
+
+  if (likesIsError) {
+    return (
+      <Alert severity="error">
+        Error loading likes data: {likesError?.message}
+      </Alert>
+    );
+  }
+
+  // if (likes.find((like) => like.userId == currentUser.id) != undefined) {
+  //   setLiked(true)
+  // } else {
+  //   console.log("false");
+  // }
+
+  // useEffect(() => {
+  //   const found =
+  //     likes?.some((like) => like.userId === currentUser.id) ?? false;
+  //   setLiked(found);
+  // }, [likes]);
+
+  // console.log(post.userId, currentUser.username)
+  // console.log(likes.find((like) => like.userId == currentUser.id) != undefined)
+  // console.log(likes);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
     setAnchorEl(event.currentTarget);
   };
 
@@ -40,22 +83,34 @@ export const Post: FC<PostProps> = ({ post }) => {
     setAnchorEl(null);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
     return <NewPost />;
   };
 
-  const handleDelete = () => {
-    mutate(post.id);
+  const handleDelete = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    mutateDeletePost(post.id);
 
     setAnchorEl(null);
   };
 
   const changeLike = () => {
-    setLiked(!liked);
-  };
+    if (!liked) {
+      mutateLikePost({
+        postId: post.id,
+        userId: currentUser.id,
+      });
+    } else {
+      mutateUnlikePost({
+        postId: post.id,
+        userId: currentUser.id,
+      });
+    }
 
-  const handleOpenProfile = () => {
-    return <Profile />;
+    setLiked(!liked);
   };
 
   return (
@@ -95,8 +150,10 @@ export const Post: FC<PostProps> = ({ post }) => {
             </div>
           )
         }
-        onClick={() => handleOpenProfile()}
-        title={mockUsers.find((user) => user.id == post.userId)?.username}
+        component={Link}
+        style={{ textDecoration: "none" }}
+        to={`/profile/${post.userId}`}
+        title={user?.username}
         subheader={post.createdAt.toLocaleDateString()}
       />
       <CardMedia component="img" height="194" image={post.imageUrl} />
@@ -106,7 +163,8 @@ export const Post: FC<PostProps> = ({ post }) => {
             <FavoriteIcon sx={{ color: "#e50b0b" }} />
           ) : (
             <FavoriteBorderIcon />
-          )}
+          )}{" "}
+          {likes.length}
         </IconButton>
       </CardActions>
       <CardContent>

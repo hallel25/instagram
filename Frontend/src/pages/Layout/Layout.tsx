@@ -3,7 +3,7 @@ import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import type { JSX } from "react";
+import { type JSX } from "react";
 import { Link } from "react-router-dom";
 
 export const Layout = (props: JSX.ElementChildrenAttribute) => {
@@ -25,7 +25,7 @@ export const Layout = (props: JSX.ElementChildrenAttribute) => {
           />
           <BottomNavigationAction
             component={Link}
-            to="/profile"
+            to={`/profile/`}
             icon={<AccountCircleIcon />}
           />
         </BottomNavigation>

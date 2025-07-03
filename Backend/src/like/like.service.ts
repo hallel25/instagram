@@ -6,6 +6,7 @@ import { likePostDto } from './dto/likePost.dto';
 import { unLikePostDto } from './dto/unLike.dto';
 import { UUID } from 'crypto';
 import { mockLikes } from 'src/DB/DB';
+import { log } from 'console';
 
 export abstract class ILikeService {
   abstract likePost(like: likePostDto);
@@ -21,19 +22,26 @@ export class LikeService implements ILikeService {
   // ) {}
 
   getPostsLikes(postId: UUID) {
-    return mockLikes.find(
-      (likeObj) =>
-        likeObj.postId == postId,
-    );
+    return mockLikes.filter((likeObj) => likeObj.postId == postId);
   }
 
   likePost(like: likePostDto) {
+    console.log({
+      id: crypto.randomUUID(),
+      postId: like.postId,
+      userId: like.userId,
+      createdAt: new Date(),
+    });
+    console.log(mockLikes.length);
+
     mockLikes.push({
       id: crypto.randomUUID(),
       postId: like.postId,
       userId: like.userId,
-      createdAt: like.createdAt,
-    });;
+      createdAt: new Date(),
+    });
+
+    console.log(mockLikes.length);
   }
 
   removeLike(like: unLikePostDto) {

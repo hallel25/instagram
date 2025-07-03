@@ -21,8 +21,8 @@ export const Home = () => {
   return (
     <>
       <Navbar text="instagram" canExit={false} />
-      {postsByOrder.map((post) => {
-        return <Post post={post} />;
+      {postsByOrder.map((post) => {        
+        return <Post post={post} key={post.id} />;
       })}
     </>
   );

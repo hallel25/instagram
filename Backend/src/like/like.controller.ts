@@ -4,7 +4,7 @@ import { likePostDto } from './dto/likePost.dto';
 import { unLikePostDto } from './dto/unLike.dto';
 import { UUID } from 'crypto';
 
-@Controller('like')
+@Controller('likes/')
 export class LikeController {
   constructor(private likeService: LikeService) {}
 
@@ -13,7 +13,7 @@ export class LikeController {
     return this.likeService.getPostsLikes(postId);
   }
 
-  @Post('/like-post')
+  @Post('like-post')
   likePost(@Body() like: likePostDto) {
     this.likeService.likePost(like);
   }
