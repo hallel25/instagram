@@ -9,6 +9,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  OutlinedInput,
+  TextField,
   Typography,
 } from "@mui/material";
 import type { PostType } from "../../types";
@@ -25,7 +27,6 @@ import { Link } from "react-router-dom";
 import { useLikePost } from "../../api/likesApi/useLikePost";
 import { usePostsLikes } from "../../api/likesApi/useGetPostsLikes";
 import { useUnlikePost } from "../../api/likesApi/useUnlikePost";
-import { tr } from "zod/v4/locales";
 
 interface PostProps {
   post: PostType;
@@ -40,13 +41,18 @@ export const Post: FC<PostProps> = ({ post }) => {
   const { mutate: mutateLikePost } = useLikePost();
   const { mutate: mutateUnlikePost } = useUnlikePost();
   const { data: user } = useGetUserById(post.userId);
-
   const {
     data: likes = [],
     error: likesError,
     isError: likesIsError,
     isLoading: likesIsLoading,
   } = usePostsLikes(post.id);
+
+  useEffect(() => {
+    const found =
+      likes?.some((like) => like.userId === currentUser.id) ?? false;
+    setLiked(found);
+  }, [likes, currentUser.id]);
 
   if (likesIsLoading) return <CircularProgress />;
 
@@ -57,22 +63,6 @@ export const Post: FC<PostProps> = ({ post }) => {
       </Alert>
     );
   }
-
-  // if (likes.find((like) => like.userId == currentUser.id) != undefined) {
-  //   setLiked(true)
-  // } else {
-  //   console.log("false");
-  // }
-
-  // useEffect(() => {
-  //   const found =
-  //     likes?.some((like) => like.userId === currentUser.id) ?? false;
-  //   setLiked(found);
-  // }, [likes]);
-
-  // console.log(post.userId, currentUser.username)
-  // console.log(likes.find((like) => like.userId == currentUser.id) != undefined)
-  // console.log(likes);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -171,6 +161,7 @@ export const Post: FC<PostProps> = ({ post }) => {
         <Typography variant="body2" id="caption">
           {post.caption}
         </Typography>
+        <OutlinedInput sx={{ width: "100%" }}></OutlinedInput>
       </CardContent>
     </Card>
   );
