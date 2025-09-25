@@ -1,21 +1,21 @@
-import { IsNotEmpty, IsString, IsUUID, IsUrl } from "class-validator";
-import { UUID } from "crypto";
+import { IsNotEmpty, IsString, IsUUID, IsUrl } from 'class-validator';
+import { UUID } from 'crypto';
 
 export class createPostDto {
-    @IsString()
-    caption: string;
+  @IsString()
+  caption: string;
 
-    @IsString()
-    @IsNotEmpty({ message: "image url can't be empty"})
-    imageUrl: string;
+  @IsString()
+  @IsNotEmpty({ message: "image url can't be empty" })
+  imageUrl: string;
 
-    @IsUUID()
-    @IsNotEmpty({ message: "user id can't be emtpy"})
-    userId: UUID;
+  @IsUUID()
+  @IsNotEmpty({ message: "user id can't be emtpy" })
+  userId: UUID;
 
-    constructor(caption: string, imageUrl: string, userid: UUID) {
-        this.caption = caption;
-        this.imageUrl = imageUrl;
-        this.userId = userid;
-    }
+  constructor(caption: string, imageUrl: string, userid: UUID) {
+    this.caption = caption;
+    this.imageUrl = imageUrl;
+    this.userId = userid;
+  }
 }

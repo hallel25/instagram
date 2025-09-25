@@ -1,7 +1,6 @@
-import { UUID } from "crypto"
-import { User } from "src/user/entities/user.entity"
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-
+import { UUID } from 'crypto';
+import { User } from 'src/user/entities/user.entity';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Post {
