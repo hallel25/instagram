@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Like } from './entities/like.entity';
 import { likePostDto } from './dto/likePost.dto';
 import { unLikePostDto } from './dto/unLike.dto';
 import { UUID } from 'crypto';
 import { mockLikes } from 'src/DB/DB';
-import { log } from 'console';
 
 export abstract class ILikeService {
   abstract likePost(like: likePostDto);

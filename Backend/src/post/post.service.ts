@@ -1,7 +1,5 @@
 import { Post } from './entities/post.entity';
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { createPostDto } from './dto/createPost.dto';
 import { editPostDto } from './dto/editPost.dto';
 import { mockPosts } from 'src/DB/DB';
@@ -41,18 +39,26 @@ export class PostService implements IPostService {
     });
   }
 
-  async editPost(post: editPostDto) {
-    throw new Error('Method not implemented.');
+  editPost(editedPost: editPostDto) {
+    const postToEdit = mockPosts.find((post) => (post.id = editedPost.id));
+
+    if (postToEdit) {
+      postToEdit.caption = editedPost.caption;
+    } else {
+      throw new Error("post doesn't exist");
+    }
   }
 
-  async deletePost(postId: UUID) {
+  deletePost(postId: UUID) {
     const deletedPost = mockPosts.find((post) => post.id == postId);
 
     if (deletedPost) {
       const removedPostIndex = mockPosts.indexOf(deletedPost);
-      removedPostIndex != -1 && mockPosts.splice(removedPostIndex, 1);
+      if (removedPostIndex != -1) {
+        mockPosts.splice(removedPostIndex, 1);
+      }
     } else {
-      throw new Error('post doesnt exist');
+      throw new Error("post doesn't exist");
     }
   }
 }

@@ -1,15 +1,16 @@
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { UUID } from 'crypto';
 
 export class editPostDto {
+  @IsUUID()
+  @IsNotEmpty({ message: 'post id is missing' })
+  id: UUID;
+
   @IsString()
   caption: string;
 
-  @IsUrl()
-  @IsNotEmpty({ message: "image url can't be empty" })
-  imageUrl: string;
-
-  constructor(caption: string, imageUrl: string) {
+  constructor(caption: string, id: UUID) {
+    this.id = id;
     this.caption = caption;
-    this.imageUrl = imageUrl;
   }
 }
