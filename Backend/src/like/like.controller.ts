@@ -3,10 +3,14 @@ import { LikeService } from './like.service';
 import { likePostDto } from './dto/likePost.dto';
 import { unLikePostDto } from './dto/unLike.dto';
 import { UUID } from 'crypto';
+import { LikeLogic } from './like.logic';
 
 @Controller('likes/')
 export class LikeController {
-  constructor(private likeService: LikeService) {}
+  constructor(
+    private likeService: LikeService,
+    private likeLogic: LikeLogic,
+  ) {}
 
   @Get(':postId')
   getPostsById(@Param('postId') postId: UUID) {
@@ -15,11 +19,11 @@ export class LikeController {
 
   @Post('like-post')
   likePost(@Body() like: likePostDto) {
-    this.likeService.likePost(like);
+    this.likeLogic.likePost(like);
   }
 
   @Delete('unlike-post')
   deletePost(@Body() like: unLikePostDto) {
-    this.likeService.removeLike(like);
+    this.likeLogic.removeLike(like);
   }
 }
