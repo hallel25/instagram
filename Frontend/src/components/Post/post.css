@@ -5,3 +5,10 @@
   overflow: hidden;
   overflow-wrap: break-word;
 }
+
+#caption-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: rtl;
+}

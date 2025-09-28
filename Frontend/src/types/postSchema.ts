@@ -13,5 +13,9 @@ export const postSchema = z.object({
 });
 
 export type PostType = z.infer<typeof postSchema>;
+
 export const postInputSchema = postSchema.omit({ id: true });
 export type PostInput = z.infer<typeof postInputSchema>;
+
+export const editPostSchema = postSchema.pick({ id: true, caption: true });
+export type EditPost = z.infer<typeof editPostSchema>;
