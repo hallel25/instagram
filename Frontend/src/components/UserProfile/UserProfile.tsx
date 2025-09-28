@@ -1,4 +1,3 @@
-import { type FC } from "react";
 import { Navbar } from "../../components/Navbar";
 import { Post } from "../../components/Post/Post";
 import { useUsersPosts } from "../../api/postsApi/useGetPostsByUser";
@@ -9,7 +8,7 @@ interface userProfileProps {
   user: UserType;
 }
 
-export const UserProfile: FC<userProfileProps> = ({ user }) => {
+export const UserProfile = ({ user }: userProfileProps) => {
   const profileUsername: string = user.username;
   const profileUserId: string = user.id;
 
@@ -29,7 +28,7 @@ export const UserProfile: FC<userProfileProps> = ({ user }) => {
       </Alert>
     );
   }
-  
+
   const postsByOrder = posts
     .filter((post) => post.userId == profileUserId)
     .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
@@ -39,7 +38,7 @@ export const UserProfile: FC<userProfileProps> = ({ user }) => {
       <Navbar canExit={false} text="profile name" />
       <h1>{profileUsername}</h1>
       {postsByOrder.map((post) => {
-        return <Post post={post} key={post.id}/>;
+        return <Post post={post} key={post.id} />;
       })}
     </>
   );

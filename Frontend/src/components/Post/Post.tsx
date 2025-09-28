@@ -19,7 +19,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DoneSharpIcon from "@mui/icons-material/DoneSharp";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState, type FC, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CurrentUserContext } from "../../hooks/useUser";
 import "./post.css";
@@ -35,7 +35,7 @@ interface PostProps {
   post: PostType;
 }
 
-export const Post: FC<PostProps> = ({ post }) => {
+export const Post = ({ post }: PostProps) => {
   const { currentUser } = useContext(CurrentUserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [liked, setLiked] = useState<boolean>(false);
@@ -91,15 +91,11 @@ export const Post: FC<PostProps> = ({ post }) => {
   };
 
   const handleEditClose = () => {
-    console.log("fe");
-
     setEditedText(post.caption);
     setEdit(false);
   };
 
   const handleEditSubmit = () => {
-    console.log("l");
-
     mutateEditPost(
       { id: post.id, caption: editedText.trim() },
       {

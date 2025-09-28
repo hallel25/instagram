@@ -22,7 +22,7 @@ interface NavbarProps {
   canExit: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
+export const Navbar = ({ text, canExit }: NavbarProps) => {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext);
   const { data: users = [], error, isError, isLoading } = useUsers();
@@ -36,8 +36,8 @@ export const Navbar: React.FC<NavbarProps> = ({ text, canExit }) => {
   }
 
   const handleUserChange = (e: SelectChangeEvent) => {
-    const user = users.find((user) => user.id == e.target.value); 
-    user && setCurrentUser(user);
+    const user = users.find((user) => user.id == e.target.value);
+    if (user) setCurrentUser(user);
   };
 
   return (
