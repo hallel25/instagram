@@ -15,6 +15,7 @@ export const useLikePost = () => {
       console.log("Like created:", response.data);
     } catch (error) {
       console.error("Failed to Like post:", error);
+      throw error;
     }
   };
 

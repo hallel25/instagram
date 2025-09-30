@@ -13,6 +13,7 @@ export const useEditPost = () => {
       console.log("Post edited:", response.data);
     } catch (error) {
       console.error("Failed to edit post:", error);
+      throw error;
     }
   };
 

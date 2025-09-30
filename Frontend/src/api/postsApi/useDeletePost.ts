@@ -11,6 +11,7 @@ export const useDeletePost = () => {
       console.log("Post deleted: ", response.statusText);
     } catch (error) {
       console.error("Failed to delete post:", error);
+      throw error;
     }
   };
 

@@ -15,6 +15,7 @@ export const useCreatePost = () => {
       console.log("Post created:", response.data);
     } catch (error) {
       console.error("Failed to create post:", error);
+      throw error;
     }
   };
 

@@ -17,6 +17,7 @@ export const useUnlikePost = () => {
       console.log("Like deleted: ", response.statusText);
     } catch (error) {
       console.error("Failed to delete like:", error);
+      throw error;
     }
   };
 

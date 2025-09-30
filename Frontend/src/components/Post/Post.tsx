@@ -119,18 +119,30 @@ export const Post = ({ post }: PostProps) => {
 
   const changeLike = () => {
     if (!liked) {
-      mutateLikePost({
-        postId: post.id,
-        userId: currentUser.id,
-      });
+      mutateLikePost(
+        {
+          postId: post.id,
+          userId: currentUser.id,
+        },
+        {
+          onSuccess: () => {
+            setLiked(!liked);
+          },
+        }
+      );
     } else {
-      mutateUnlikePost({
-        postId: post.id,
-        userId: currentUser.id,
-      });
+      mutateUnlikePost(
+        {
+          postId: post.id,
+          userId: currentUser.id,
+        },
+        {
+          onSuccess: () => {
+            setLiked(!liked);
+          },
+        }
+      );
     }
-
-    setLiked(!liked);
   };
 
   return (
