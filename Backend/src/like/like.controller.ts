@@ -10,7 +10,9 @@ export class LikeController {
   constructor(
     private likeService: LikeService,
     private likeLogic: LikeLogic,
-  ) {}
+  ) {
+    likeLogic.likeService = likeService;
+  }
 
   @Get(':postId')
   getPostsById(@Param('postId') postId: UUID) {

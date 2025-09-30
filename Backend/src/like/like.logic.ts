@@ -3,18 +3,11 @@ import { likePostDto } from './dto/likePost.dto';
 import { LikeService } from './like.service';
 import { Like } from './entities/like.entity';
 
-export abstract class ILikeLogic {
-  abstract likePost(like: likePostDto);
-  abstract removeLike(like: likePostDto);
-}
-
-export class LikeLogic implements ILikeLogic {
-  constructor(private likeService: LikeService) {}
+export class LikeLogic {
+  constructor(public likeService: LikeService) {}
 
   likePost(like: likePostDto) {
-    const foundPost = mockPosts.find(
-      (post) => post.userId == like.userId && post.id == like.postId,
-    );
+    const foundPost = mockPosts.find((post) => post.id == like.postId);
 
     const foundLike = mockLikes.find(
       (likeObj) =>
@@ -25,14 +18,14 @@ export class LikeLogic implements ILikeLogic {
       throw new Error('like already exists');
     } else if (!foundPost) {
       throw new Error('post not found');
-    } else {
-      this.likeService.likePost({
-        id: crypto.randomUUID(),
-        postId: like.postId,
-        userId: like.userId,
-        createdAt: new Date(),
-      } as Like);
     }
+
+    this.likeService.likePost({
+      id: crypto.randomUUID(),
+      postId: like.postId,
+      userId: like.userId,
+      createdAt: new Date(),
+    } as Like);
   }
 
   removeLike(like: likePostDto) {
