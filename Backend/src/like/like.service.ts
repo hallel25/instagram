@@ -1,34 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { UUID } from 'crypto';
-import { mockLikes } from 'src/DB/DB';
 import { Like } from './entities/like.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 export abstract class ILikeService {
-  abstract likePost(like: Like);
-  abstract removeLike(like: Like);
-  abstract getPostsLikes(postId: UUID);
+  abstract likePost(like: Like): Promise<void>;
+  abstract removeLike(like: Like): Promise<void>;
+  abstract getPostsLikes(postId: UUID): Promise<Like[]>;
 }
 
 @Injectable()
 export class LikeService implements ILikeService {
-  // constructor(
-  //     @InjectRepository(Like)
-  //     private LikeRepository: Repository<Like>
-  // ) {}
+  constructor(
+    @InjectRepository(Like)
+    private LikeRepository: Repository<Like>,
+  ) {}
 
-  getPostsLikes(postId: UUID) {
-    return mockLikes.filter((likeObj) => likeObj.postId == postId);
+  async getPostsLikes(postId: UUID): Promise<Like[]> {
+    return await this.LikeRepository.find({
+      where: { postId },
+      relations: ['user', 'post'],
+    });
   }
 
-  likePost(like: Like) {
-    mockLikes.push(like);
+  async likePost(like: Like): Promise<void> {
+    await this.LikeRepository.save(like);
   }
 
-  removeLike(like: Like) {
-    const removedLikeIndex = mockLikes.indexOf(like);
-
-    if (removedLikeIndex != -1) {
-      mockLikes.splice(removedLikeIndex, 1);
-    }
+  async removeLike(like: Like): Promise<void> {
+    await this.LikeRepository.remove(like);
   }
 }
