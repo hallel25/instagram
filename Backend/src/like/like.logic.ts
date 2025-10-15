@@ -29,8 +29,8 @@ export class LikeLogic {
 
     const foundLike = await this.likeRepository.findOne({
       where: {
-        userId: like.userId,
-        postId: like.postId,
+        user: { id: like.userId },
+        post: { id: like.postId },
       },
     });
 
@@ -42,28 +42,17 @@ export class LikeLogic {
       throw new Error('user not found');
     }
 
-    await this.likeService.likePost({
+    const newLike: Like = {
       id: crypto.randomUUID(),
-      postId: like.postId,
-      userId: like.userId,
       createdAt: new Date(),
       user: foundUser,
       post: foundPost,
-    } as Like);
+    };
+
+    await this.likeService.likePost(newLike);
   }
 
   async removeLike(like: likePostDto) {
-    const deletedLike = await this.likeRepository.findOne({
-      where: {
-        userId: like.userId,
-        postId: like.postId,
-      },
-    });
-
-    if (!deletedLike) {
-      throw new Error("like doesn't exist");
-    } else {
-      await this.likeService.removeLike(deletedLike);
-    }
+    await this.likeService.removeLike(like);
   }
 }

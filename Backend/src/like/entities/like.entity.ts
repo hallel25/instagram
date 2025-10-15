@@ -18,15 +18,9 @@ export class Like {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column()
-  userId: UUID;
-
   @ManyToOne(() => Post, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({ name: 'postId' })
   post: Post;
-
-  @Column()
-  postId: UUID;
 
   @Column()
   createdAt: Date;

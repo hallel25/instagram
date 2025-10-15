@@ -3,11 +3,13 @@ import { UUID } from 'crypto';
 import { Like } from './entities/like.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { returnLikeDto } from './dto/returnLike.dto';
+import { unLikePostDto } from './dto/unLike.dto';
 
 export abstract class ILikeService {
   abstract likePost(like: Like): Promise<void>;
-  abstract removeLike(like: Like): Promise<void>;
-  abstract getPostsLikes(postId: UUID): Promise<Like[]>;
+  abstract removeLike(like: unLikePostDto): Promise<void>;
+  abstract getPostsLikes(postId: UUID): Promise<returnLikeDto[]>;
 }
 
 @Injectable()
@@ -17,10 +19,24 @@ export class LikeService implements ILikeService {
     private LikeRepository: Repository<Like>,
   ) {}
 
-  async getPostsLikes(postId: UUID): Promise<Like[]> {
-    return await this.LikeRepository.find({
-      where: { postId },
+  async getPostsLikes(postId: UUID): Promise<returnLikeDto[]> {
+    const likes = await this.LikeRepository.find({
+      select: {
+        id: true,
+        user: { id: true },
+        post: { id: true },
+        createdAt: true,
+      },
+      where: { post: { id: postId } },
       relations: ['user', 'post'],
+    });
+
+    return likes.map((like) => {
+      return {
+        ...like,
+        userId: like.user.id,
+        postId: like.post.id,
+      };
     });
   }
 
@@ -28,7 +44,10 @@ export class LikeService implements ILikeService {
     await this.LikeRepository.save(like);
   }
 
-  async removeLike(like: Like): Promise<void> {
-    await this.LikeRepository.remove(like);
+  async removeLike(like: unLikePostDto): Promise<void> {
+    await this.LikeRepository.delete({
+      user: { id: like.userId },
+      post: { id: like.postId },
+    });
   }
 }
