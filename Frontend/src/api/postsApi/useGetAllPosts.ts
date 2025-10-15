@@ -9,15 +9,17 @@ export const usePosts = () => {
   const fetchPosts = async (): Promise<PostType[]> => {
     const { data } = await axios.get("http://localhost:3000/posts");
     const validationResult = PostsArraySchema.safeParse(data);
-
     if (!validationResult.success) {
-      console.error("API Response validation failed:", validationResult.error);
+      console.error(
+        "API Response validation failed:",
+        validationResult.error.message
+      );
       throw new Error("Invalid data format received from API");
     }
 
     return validationResult.data;
   };
-  
+
   return useQuery<PostType[], Error>({
     queryKey: ["posts"],
     queryFn: fetchPosts,

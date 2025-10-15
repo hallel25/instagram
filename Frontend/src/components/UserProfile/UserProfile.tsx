@@ -30,12 +30,12 @@ export const UserProfile = ({ user }: userProfileProps) => {
   }
 
   const postsByOrder = posts
-    .filter((post) => post.userId == profileUserId)
+    .filter((post) => post.user == profileUserId)
     .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
 
   return (
     <>
-      <Navbar canExit={false} text="profile name" />
+      <Navbar canExit={false} text="profile" />
       <h1>{profileUsername}</h1>
       {postsByOrder.map((post) => {
         return <Post post={post} key={post.id} />;

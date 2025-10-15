@@ -46,7 +46,7 @@ export const Post = ({ post }: PostProps) => {
   const { mutate: mutateLikePost } = useLikePost();
   const { mutate: mutateUnlikePost } = useUnlikePost();
   const { mutate: mutateEditPost } = useEditPost();
-  const { data: user } = useGetUserById(post.userId);
+  const { data: user } = useGetUserById(post.user);
   const {
     data: likes = [],
     error: likesError,
@@ -97,7 +97,7 @@ export const Post = ({ post }: PostProps) => {
 
   const handleEditSubmit = () => {
     mutateEditPost(
-      { id: post.id, caption: editedText.trim() },
+      { id: post.id, caption: editedText.trim(), user: currentUser.id },
       {
         onSuccess: () => {
           setEdit(false);
@@ -149,7 +149,7 @@ export const Post = ({ post }: PostProps) => {
     <Card style={{ marginBottom: 20 }}>
       <CardHeader
         action={
-          post.userId == currentUser.id && (
+          post.user == currentUser.id && (
             <div>
               <IconButton
                 aria-label="more"
@@ -184,7 +184,7 @@ export const Post = ({ post }: PostProps) => {
         }
         component={Link}
         style={{ textDecoration: "none" }}
-        to={`/profile/${post.userId}`}
+        to={`/profile/${post.user}`}
         title={user?.username}
         subheader={post.createdAt.toLocaleDateString()}
       />
