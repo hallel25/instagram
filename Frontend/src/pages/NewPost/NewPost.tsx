@@ -16,7 +16,7 @@ export const NewPost = () => {
 
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setURL(e.target.value);
-    
+
     if (e.target.validity.valid) {
       setURLError(false);
     } else {
@@ -27,7 +27,7 @@ export const NewPost = () => {
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
-  
+
   const onSubmit = () => {
     const httpUrl = z.url({
       protocol: /^https?$/,
@@ -36,13 +36,21 @@ export const NewPost = () => {
     const result = httpUrl.safeParse(URL);
 
     if (result.success) {
-      navigate(-1);
-
-      mutate({
-        caption: description,
-        imageUrl: URL,
-        userId: currentUser.id,
-      });
+      mutate(
+        {
+          caption: description,
+          imageUrl: URL,
+          user: currentUser.id,
+        },
+        {
+          onError: (error) => {
+            alert("Error creating post: " + error.message);
+          },
+          onSuccess() {
+            navigate(-1);
+          },
+        }
+      );
     } else {
       setURLError(true);
       alert("invalid url");
