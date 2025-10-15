@@ -1,19 +1,31 @@
 import { UUID } from 'crypto';
 import { Post } from 'src/post/entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Entity, Column, PrimaryColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Like {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
-  @Column()
-  @ManyToMany(() => User, (user) => user.id)
-  userId: UUID;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column()
-  @ManyToMany(() => Post, (post) => post.id)
+  userId: UUID;
+
+  @ManyToOne(() => Post, { cascade: ['remove'], onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'postId' })
+  post: Post;
+
+  @Column()
   postId: UUID;
 
   @Column()

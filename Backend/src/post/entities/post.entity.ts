@@ -1,6 +1,12 @@
 import { UUID } from 'crypto';
 import { User } from 'src/user/entities/user.entity';
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Post {
@@ -13,9 +19,9 @@ export class Post {
   @Column()
   imageUrl: string;
 
-  @Column()
-  @ManyToOne(() => User, (user) => user.id)
-  userId: UUID;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: User;
 
   @Column()
   createdAt: Date;

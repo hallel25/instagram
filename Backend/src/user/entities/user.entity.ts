@@ -11,4 +11,7 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
 }
