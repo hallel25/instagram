@@ -3,7 +3,7 @@ import axios from "axios";
 import { type PostType } from "../../types";
 import { queryClient } from "../../lib/queryClient";
 
-type CreatePostInput = Pick<PostType, "caption" | "user" | "imageUrl">;
+type CreatePostInput = Pick<PostType, "caption" | "userId" | "imageUrl">;
 
 export const useCreatePost = () => {
   const createPost = async (post: CreatePostInput): Promise<void> => {

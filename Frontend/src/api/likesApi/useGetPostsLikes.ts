@@ -12,7 +12,10 @@ export const usePostsLikes = (postId: string) => {
     const validationResult = LikesArraySchema.safeParse(data);
 
     if (!validationResult.success) {
-      console.error("API Response validation failed:", validationResult.error);
+      console.error(
+        "API Response validation failed:",
+        validationResult.error.message
+      );
       throw new Error("Invalid data format received from API");
     }
 
@@ -21,6 +24,6 @@ export const usePostsLikes = (postId: string) => {
 
   return useQuery<LikeType[], Error>({
     queryKey: ["likes", postId],
-    queryFn: ({ queryKey }) => fetchPostsLike(String(queryKey[1])),
+    queryFn: () => fetchPostsLike(postId),
   });
 };

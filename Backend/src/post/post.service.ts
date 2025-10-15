@@ -6,10 +6,11 @@ import { UUID } from 'crypto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
+import { ReturnPostDto } from './dto/returnPost.dto';
 
 export abstract class IPostService {
-  abstract getAllPosts(): Promise<Post[]>;
-  abstract getUsersPosts(userId: UUID): Promise<Post[]>;
+  abstract getAllPosts(): Promise<ReturnPostDto[]>;
+  abstract getUsersPosts(userId: UUID): Promise<ReturnPostDto[]>;
   abstract addPost(post: createPostDto): Promise<void>;
   abstract editPost(post: editPostDto): Promise<void>;
   abstract deletePost(postId: UUID): Promise<void>;
@@ -23,17 +24,29 @@ export class PostService implements IPostService {
     private userService: UserService,
   ) {}
 
-  async getAllPosts(): Promise<Post[]> {
-    return await this.postRepository.find({
+  async getAllPosts(): Promise<ReturnPostDto[]> {
+    const posts = await this.postRepository.find({
+      select: {
+        id: true,
+        caption: true,
+        imageUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        user: { id: true, username: true },
+      },
       relations: ['user'],
     });
+
+    return posts.map((post) => ({ ...post, userId: post.user.id }));
   }
 
-  async getUsersPosts(userId: UUID): Promise<Post[]> {
-    return await this.postRepository.find({
+  async getUsersPosts(userId: UUID): Promise<ReturnPostDto[]> {
+    const posts = await this.postRepository.find({
       where: { user: { id: userId } },
       relations: ['user'],
     });
+
+    return posts.map((post) => ({ ...post, userId: post.user.id }));
   }
 
   async addPost(post: createPostDto) {
