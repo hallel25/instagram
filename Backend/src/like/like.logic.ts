@@ -1,43 +1,69 @@
-import { mockLikes, mockPosts } from 'src/DB/DB';
 import { likePostDto } from './dto/likePost.dto';
 import { LikeService } from './like.service';
 import { Like } from './entities/like.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Post } from 'src/post/entities/post.entity';
 
+@Injectable()
 export class LikeLogic {
-  constructor(public likeService: LikeService) {}
+  constructor(
+    public likeService: LikeService,
+    @InjectRepository(Post)
+    private postRepository: Repository<Post>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
+  ) {}
 
-  likePost(like: likePostDto) {
-    const foundPost = mockPosts.find((post) => post.id == like.postId);
+  async likePost(like: likePostDto) {
+    const foundPost = await this.postRepository.findOne({
+      where: { id: like.postId },
+    });
+    const foundUser = await this.userRepository.findOne({
+      where: { id: like.userId },
+    });
 
-    const foundLike = mockLikes.find(
-      (likeObj) =>
-        likeObj.userId == like.userId && likeObj.postId == like.postId,
-    );
+    const foundLike = await this.likeRepository.findOne({
+      where: {
+        userId: like.userId,
+        postId: like.postId,
+      },
+    });
 
     if (foundLike) {
       throw new Error('like already exists');
     } else if (!foundPost) {
       throw new Error('post not found');
+    } else if (!foundUser) {
+      throw new Error('user not found');
     }
 
-    this.likeService.likePost({
+    await this.likeService.likePost({
       id: crypto.randomUUID(),
       postId: like.postId,
       userId: like.userId,
       createdAt: new Date(),
+      user: foundUser,
+      post: foundPost,
     } as Like);
   }
 
-  removeLike(like: likePostDto) {
-    const deletedLike = mockLikes.find(
-      (likeObj) =>
-        likeObj.userId == like.userId && likeObj.postId == like.postId,
-    );
+  async removeLike(like: likePostDto) {
+    const deletedLike = await this.likeRepository.findOne({
+      where: {
+        userId: like.userId,
+        postId: like.postId,
+      },
+    });
 
     if (!deletedLike) {
       throw new Error("like doesn't exist");
     } else {
-      this.likeService.removeLike(deletedLike);
+      await this.likeService.removeLike(deletedLike);
     }
   }
 }
