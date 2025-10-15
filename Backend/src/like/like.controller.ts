@@ -15,17 +15,17 @@ export class LikeController {
   }
 
   @Get(':postId')
-  getPostsById(@Param('postId') postId: UUID) {
-    return this.likeService.getPostsLikes(postId);
+  async getPostsById(@Param('postId') postId: UUID) {
+    return await this.likeService.getPostsLikes(postId);
   }
 
   @Post('like-post')
-  likePost(@Body() like: likePostDto) {
-    this.likeLogic.likePost(like);
+  async likePost(@Body() like: likePostDto) {
+    return await this.likeLogic.likePost(like);
   }
 
   @Delete('unlike-post')
-  deletePost(@Body() like: unLikePostDto) {
-    this.likeLogic.removeLike(like);
+  async deletePost(@Body() like: unLikePostDto) {
+    return await this.likeLogic.removeLike(like);
   }
 }

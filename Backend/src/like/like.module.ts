@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { LikeController } from './like.controller';
 import { LikeLogic } from './like.logic';
+import { Like } from './entities/like.entity';
+import { User } from 'src/user/entities/user.entity';
+import { Post } from 'src/post/entities/post.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [LikeController],
   providers: [LikeService, LikeLogic],
+  imports: [TypeOrmModule.forFeature([Like, User, Post])],
 })
-export class likeModule {}
+export class LikeModule {}
