@@ -14,6 +14,7 @@ export abstract class IPostService {
   abstract addPost(post: createPostDto): Promise<void>;
   abstract editPost(post: editPostDto): Promise<void>;
   abstract deletePost(postId: UUID): Promise<void>;
+  abstract findPostById(postId: UUID): Promise<Post>;
 }
 
 @Injectable()
@@ -93,5 +94,18 @@ export class PostService implements IPostService {
     } else {
       throw new Error("post doesn't exist");
     }
+  }
+
+  async findPostById(postId: UUID): Promise<Post> {
+    const post = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: ['user'],
+    });
+
+    if (!post) {
+      throw new Error('post not found');
+    }
+
+    return post;
   }
 }
