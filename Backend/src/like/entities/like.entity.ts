@@ -7,8 +7,9 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
-
+@Unique(['user', 'post'])
 @Entity()
 export class Like {
   @PrimaryGeneratedColumn('uuid')
