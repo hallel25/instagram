@@ -16,8 +16,6 @@ export const LikePost = ({ postId, userId, likes }: LikePostProps) => {
   const { mutate: mutateUnlikePost } = useUnlikePost();
 
   const liked = likes.some((like) => like.user.id === userId) ?? false;
-  console.log(liked);
-
   const changeLike = () => {
     if (!liked) {
       mutateLikePost({

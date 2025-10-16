@@ -38,8 +38,6 @@ export class PostService implements IPostService {
       relations: ['user', 'likes', 'likes.user'],
     });
 
-    // console.log(posts.map((post) => post.likes.map((like) => like.user.id)));
-
     return posts.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
   }
 
@@ -62,6 +60,7 @@ export class PostService implements IPostService {
   }
 
   async addPost(post: createPostDto) {
+    console.log(post);
     const user = await this.userService.getUsersById(post.userId);
 
     const newPost: Post = {
