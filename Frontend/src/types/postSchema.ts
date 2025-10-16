@@ -1,5 +1,4 @@
 import { z } from "zod/v4";
-import { userSchema } from "./userSchema";
 
 export const postSchema = z.object({
   id: z.uuid(),
@@ -8,7 +7,7 @@ export const postSchema = z.object({
     protocol: /^https?$/,
     hostname: z.regexes.domain,
   }),
-  user: userSchema.transform((user) => user.id),
+  userId: z.uuid(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 });
@@ -21,6 +20,6 @@ export type PostInput = z.infer<typeof postInputSchema>;
 export const editPostSchema = postSchema.pick({
   id: true,
   caption: true,
-  user: true,
+  userId: true,
 });
 export type EditPost = z.infer<typeof editPostSchema>;

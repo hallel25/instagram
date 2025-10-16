@@ -30,7 +30,7 @@ export const UserProfile = ({ user }: userProfileProps) => {
   }
 
   const postsByOrder = posts
-    .filter((post) => post.user == profileUserId)
+    .filter((post) => post.userId == profileUserId)
     .sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
 
   return (

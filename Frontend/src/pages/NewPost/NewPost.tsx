@@ -40,7 +40,7 @@ export const NewPost = () => {
         {
           caption: description,
           imageUrl: URL,
-          user: currentUser.id,
+          userId: currentUser.id,
         },
         {
           onError: (error) => {
@@ -67,6 +67,7 @@ export const NewPost = () => {
         variant="standard"
         label="Photo url"
         value={URL}
+        type="url"
         onChange={handleURLChange}
         error={URLError}
         helperText="Create a new post with the specified URL"
@@ -84,7 +85,7 @@ export const NewPost = () => {
         type="submit"
         variant="contained"
         fullWidth
-        disabled={URL == ""}
+        disabled={URL == "" || URLError}
         style={{ marginTop: 20 }}
         onClick={onSubmit}
       >
