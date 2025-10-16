@@ -6,11 +6,10 @@ import { UUID } from 'crypto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
-import { ReturnPostDto } from './dto/returnPost.dto';
 
 export abstract class IPostService {
-  abstract getAllPosts(): Promise<ReturnPostDto[]>;
-  abstract getUsersPosts(userId: UUID): Promise<ReturnPostDto[]>;
+  abstract getAllPosts(): Promise<Post[]>;
+  abstract getUsersPosts(userId: UUID): Promise<Post[]>;
   abstract addPost(post: createPostDto): Promise<void>;
   abstract editPost(post: editPostDto): Promise<void>;
   abstract deletePost(postId: UUID): Promise<void>;
@@ -25,7 +24,7 @@ export class PostService implements IPostService {
     private userService: UserService,
   ) {}
 
-  async getAllPosts(): Promise<ReturnPostDto[]> {
+  async getAllPosts(): Promise<Post[]> {
     const posts = await this.postRepository.find({
       select: {
         id: true,
@@ -34,20 +33,32 @@ export class PostService implements IPostService {
         createdAt: true,
         updatedAt: true,
         user: { id: true, username: true },
+        likes: { id: true, user: { id: true } },
       },
-      relations: ['user'],
+      relations: ['user', 'likes', 'likes.user'],
     });
 
-    return posts.map((post) => ({ ...post, userId: post.user.id }));
+    // console.log(posts.map((post) => post.likes.map((like) => like.user.id)));
+
+    return posts.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
   }
 
-  async getUsersPosts(userId: UUID): Promise<ReturnPostDto[]> {
+  async getUsersPosts(userId: UUID): Promise<Post[]> {
     const posts = await this.postRepository.find({
+      select: {
+        id: true,
+        caption: true,
+        imageUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        user: { id: true, username: true },
+        likes: { id: true, user: { id: true } },
+      },
       where: { user: { id: userId } },
-      relations: ['user'],
+      relations: ['user', 'likes', 'likes.user'],
     });
 
-    return posts.map((post) => ({ ...post, userId: post.user.id }));
+    return posts.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
   }
 
   async addPost(post: createPostDto) {
@@ -60,6 +71,7 @@ export class PostService implements IPostService {
       user: user,
       createdAt: new Date(),
       updatedAt: new Date(),
+      likes: [],
     };
 
     try {
@@ -99,7 +111,6 @@ export class PostService implements IPostService {
   async findPostById(postId: UUID): Promise<Post> {
     const post = await this.postRepository.findOne({
       where: { id: postId },
-      relations: ['user'],
     });
 
     if (!post) {

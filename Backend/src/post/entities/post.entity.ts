@@ -1,4 +1,5 @@
 import { UUID } from 'crypto';
+import { Like } from 'src/like/entities/like.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
@@ -6,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -28,4 +30,7 @@ export class Post {
 
   @Column()
   updatedAt: Date;
+
+  @OneToMany(() => Like, (like) => like.post)
+  likes: Like[];
 }
