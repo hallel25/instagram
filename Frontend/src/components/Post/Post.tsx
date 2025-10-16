@@ -28,7 +28,7 @@ export const Post = ({ post }: PostProps) => {
         userId={currentUser.id}
       />
       <CardMedia component="img" height="194" image={post.imageUrl} />
-      <LikePost postId={post.id} userId={currentUser.id} />
+      <LikePost likes={post.likes} postId={post.id} userId={currentUser.id} />
       <PostCaption
         post={post}
         isEditing={edit}

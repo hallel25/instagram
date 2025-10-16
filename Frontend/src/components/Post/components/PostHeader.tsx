@@ -3,7 +3,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import type { PostType } from "../../../types";
 import { useState } from "react";
 import { useDeletePost } from "../../../api/postsApi/useDeletePost";
-import { useGetUserById } from "../../../api/usersApi/useGetUserById";
 import { Link } from "react-router-dom";
 
 interface HeaderProps {
@@ -17,7 +16,6 @@ export const PostHeader = ({
   handleBeginEdit,
   userId: currentUserId,
 }: HeaderProps) => {
-  const { data: user } = useGetUserById(post.userId);
   const { mutate: mutateDeletePost } = useDeletePost();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -42,7 +40,7 @@ export const PostHeader = ({
   return (
     <CardHeader
       action={
-        post.userId == currentUserId && (
+        post.user.id == currentUserId && (
           <div>
             <IconButton
               aria-label="more"
@@ -76,9 +74,9 @@ export const PostHeader = ({
         )
       }
       style={{ textDecoration: "none", color: "black" }}
-      to={`/profile/${post.userId}`}
+      to={`/profile/${post.user.id}`}
       component={Link}
-      title={user?.username}
+      title={post.user.username}
       subheader={post.createdAt.toLocaleDateString()}
     />
   );

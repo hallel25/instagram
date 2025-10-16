@@ -1,42 +1,22 @@
-import {
-  Alert,
-  CardActions,
-  CircularProgress,
-  IconButton,
-} from "@mui/material";
+import { CardActions, IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useLikePost } from "../../../api/likesApi/useLikePost";
 import { useUnlikePost } from "../../../api/likesApi/useUnlikePost";
-import { usePostsLikes } from "../../../api/likesApi/useGetPostsLikes";
+import type { LikeForPost } from "../../../types";
 
 interface LikePostProps {
   postId: string;
   userId: string;
+  likes: LikeForPost[];
 }
 
-export const LikePost = ({ postId, userId }: LikePostProps) => {
+export const LikePost = ({ postId, userId, likes }: LikePostProps) => {
   const { mutate: mutateLikePost } = useLikePost();
   const { mutate: mutateUnlikePost } = useUnlikePost();
 
-  const {
-    data: likes = [],
-    error: likesError,
-    isError: likesIsError,
-    isLoading: likesIsLoading,
-  } = usePostsLikes(postId);
-
-  const liked = likes.some((like) => like.userId === userId) ?? false;
-
-  if (likesIsLoading) return <CircularProgress />;
-
-  if (likesIsError) {
-    return (
-      <Alert severity="error">
-        Error loading likes data: {likesError?.message}
-      </Alert>
-    );
-  }
+  const liked = likes.some((like) => like.user.id === userId) ?? false;
+  console.log(liked);
 
   const changeLike = () => {
     if (!liked) {

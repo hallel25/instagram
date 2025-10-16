@@ -23,6 +23,7 @@ export const useLikePost = () => {
     mutationFn: likePost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["likes"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 };

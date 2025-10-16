@@ -14,14 +14,10 @@ export const Home = () => {
     );
   }
 
-  const postsByOrder = posts.sort((a, b) =>
-    a.createdAt > b.createdAt ? -1 : 1
-  );
-
   return (
     <>
       <Navbar text="instagram" canExit={false} />
-      {postsByOrder.map((post) => {        
+      {posts.map((post) => {
         return <Post post={post} key={post.id} />;
       })}
     </>

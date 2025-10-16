@@ -25,6 +25,7 @@ export const useUnlikePost = () => {
     mutationFn: deleteLike,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["likes"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 };

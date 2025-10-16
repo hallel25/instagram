@@ -13,7 +13,10 @@ export const useUsersPosts = (userId: string) => {
     const validationResult = PostsArraySchema.safeParse(data);
 
     if (!validationResult.success) {
-      console.error("API Response validation failed:", validationResult.error);
+      console.error(
+        "API Response validation failed:",
+        validationResult.error.message
+      );
       throw new Error("Invalid data format received from API");
     }
 
