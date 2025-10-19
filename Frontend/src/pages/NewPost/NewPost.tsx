@@ -22,7 +22,7 @@ export const NewPost = () => {
     setURL(e.target.value);
   };
 
-  URLError = !httpUrl.safeParse(URL).success;
+  URLError = URL != "" && !httpUrl.safeParse(URL).success;
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);

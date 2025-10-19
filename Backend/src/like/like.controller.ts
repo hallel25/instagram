@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { likePostDto } from './dto/likePost.dto';
 import { unLikePostDto } from './dto/unLike.dto';
-import { UUID } from 'crypto';
 import { LikeLogic } from './like.logic';
 
 @Controller('likes/')
@@ -12,11 +11,6 @@ export class LikeController {
     private likeLogic: LikeLogic,
   ) {
     likeLogic.likeService = likeService;
-  }
-
-  @Get(':postId')
-  async getPostsById(@Param('postId') postId: UUID) {
-    return await this.likeService.getPostsLikes(postId);
   }
 
   @Post('like-post')
