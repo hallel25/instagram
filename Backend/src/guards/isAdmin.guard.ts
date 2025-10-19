@@ -17,6 +17,10 @@ export class RolesGuard implements CanActivate {
 
     const isAdmin = await this.userService.checkIsAdmin(req.body.userId);
 
-    return isAdmin;
+    if (!isAdmin) {
+      throw new Error('Access denied. Admins only.');
+    }
+
+    return true;
   }
 }

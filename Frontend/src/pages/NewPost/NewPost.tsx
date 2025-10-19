@@ -11,28 +11,24 @@ export const NewPost = () => {
   const { currentUser } = useContext(CurrentUserContext);
   const [URL, setURL] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [URLError, setURLError] = useState<boolean>(false);
+  let URLError = false;
   const { mutate } = useCreatePost();
+  const httpUrl = z.url({
+    protocol: /^https?$/,
+    hostname: z.regexes.domain,
+  });
 
   const handleURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setURL(e.target.value);
-
-    if (e.target.validity.valid) {
-      setURLError(false);
-    } else {
-      setURLError(true);
-    }
   };
+
+  URLError = !httpUrl.safeParse(URL).success;
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
 
   const onSubmit = () => {
-    const httpUrl = z.url({
-      protocol: /^https?$/,
-      hostname: z.regexes.domain,
-    });
     const result = httpUrl.safeParse(URL);
 
     if (result.success) {
@@ -52,7 +48,7 @@ export const NewPost = () => {
         }
       );
     } else {
-      setURLError(true);
+      URLError = true;
       alert("invalid url");
     }
   };

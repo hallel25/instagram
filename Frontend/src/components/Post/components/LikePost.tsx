@@ -17,16 +17,15 @@ export const LikePost = ({ postId, userId, likes }: LikePostProps) => {
 
   const liked = likes.some((like) => like.user.id === userId) ?? false;
   const changeLike = () => {
+    const like = {
+      postId: postId,
+      userId: userId,
+    };
+
     if (!liked) {
-      mutateLikePost({
-        postId: postId,
-        userId: userId,
-      });
+      mutateLikePost(like);
     } else {
-      mutateUnlikePost({
-        postId: postId,
-        userId: userId,
-      });
+      mutateUnlikePost(like);
     }
   };
 

@@ -35,10 +35,11 @@ export class PostService implements IPostService {
         user: { id: true, username: true },
         likes: { id: true, user: { id: true } },
       },
-      relations: ['user', 'likes', 'likes.user'],
+      relations: { user: true, likes: { user: true } },
+      order: { createdAt: 'DESC' },
     });
 
-    return posts.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    return posts;
   }
 
   async getUsersPosts(userId: UUID): Promise<Post[]> {
